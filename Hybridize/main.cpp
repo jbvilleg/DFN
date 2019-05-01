@@ -57,12 +57,13 @@
 #include "TPZSSpStructMatrix.h"
 #include "pzskylstrmatrix.h"
 #include "TPZSkylineNSymStructMatrix.h"
-#include "TPZHybridizeHDiv.h"
+//#include "TPZHybridizeHDiv.h"
 #include "pzbuildmultiphysicsmesh.h"
 
 #include "TPZMixedDarcyFlow.h"
 #include "TPZPrimalPoisson.h"
 #include "TPZGmshReader.h"
+#include "HybridizeHdiv.h"
 
 using namespace std;
 using namespace cv;
@@ -130,10 +131,18 @@ void MixedTest(){
     bool optimizeBandwidth = true;
     MixedMesh->InitializeBlock();
     
+//    TPZCompMesh * cmesh_m_Hybrid;
+//    TPZManVector<TPZCompMesh*, 3> meshvector_Hybrid(3);
+//    TPZHybridizeHDiv hybridizer;
+//    tie(cmesh_m_Hybrid, meshvector_Hybrid) = hybridizer.Hybridize(MixedMesh, fmeshvec, true, -1.);
+//
+    
     TPZCompMesh * cmesh_m_Hybrid;
     TPZManVector<TPZCompMesh*, 3> meshvector_Hybrid(3);
-    TPZHybridizeHDiv hybridizer;
+    HybridizeHDiv hybridizer;
     tie(cmesh_m_Hybrid, meshvector_Hybrid) = hybridizer.Hybridize(MixedMesh, fmeshvec, true, -1.);
+    
+    
     cmesh_m_Hybrid->InitializeBlock();
     
     std::ofstream outhy("MixedCMesh_Hy.txt");
